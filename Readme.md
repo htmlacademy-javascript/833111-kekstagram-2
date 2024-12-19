@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Мария Герасимова](https://up.htmlacademy.ru/javascript-individual/2/user/833111).
-* Наставник: `Неизвестно`.
+* Наставник: [Юрий Белобородов] (https://htmlacademy.ru/profile/id514591).
 
 ---
 
