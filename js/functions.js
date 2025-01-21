@@ -1,11 +1,11 @@
 //Функция проверки длины строки
-function stringLength(string, maxLength) {
+function checkStringLength(string, maxLength) {
   return string.length <= maxLength;
 }
-console.log(stringLength('Привет, мир!', 15)); // Вывод результата в консоль
+window.console.log(stringLength('Привет, мир!', 15)); // Вывод результата в консоль
 
 //Функция проверки палиндрома
-function palindromeCheck(string) {
+function isPalindromeCheck(string) {
   const cleanedStr = string.replaceAll(' ', '').toLowerCase();
   let reversedStr = '';
   for (let i = cleanedStr.length - 1; i >= 0; i--) {
@@ -13,7 +13,7 @@ function palindromeCheck(string) {
   }
   return cleanedStr === reversedStr;
 }
-console.log(palindromeCheck('А роза упала на лапу Азора')); // Вывод результата в консоль
-console.log(palindromeCheck('ДовОд')); // Вывод результата в консоль
-console.log(palindromeCheck('Привет')); // Вывод результата в консоль
+window.console.log(palindromeCheck('А роза упала на лапу Азора')); // Вывод результата в консоль
+window.console.log(palindromeCheck('ДовОд')); // Вывод результата в консоль
+window.console.log(palindromeCheck('Привет')); // Вывод результата в консоль
 
