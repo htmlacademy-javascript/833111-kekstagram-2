@@ -2,7 +2,7 @@
 function checkStringLength(string, maxLength) {
   return string.length <= maxLength;
 }
-window.console.log(stringLength('Привет, мир!', 15)); // Вывод результата в консоль
+window.console.log(сheckStringLength('Привет, мир!', 15)); // Вывод результата в консоль
 
 //Функция проверки палиндрома
 function isPalindromeCheck(string) {
@@ -13,7 +13,7 @@ function isPalindromeCheck(string) {
   }
   return cleanedStr === reversedStr;
 }
-window.console.log(palindromeCheck('А роза упала на лапу Азора')); // Вывод результата в консоль
-window.console.log(palindromeCheck('ДовОд')); // Вывод результата в консоль
-window.console.log(palindromeCheck('Привет')); // Вывод результата в консоль
+window.console.log(isPalindromeCheck('А роза упала на лапу Азора')); // Вывод результата в консоль
+window.console.log(isPalindromeCheck('ДовОд')); // Вывод результата в консоль
+window.console.log(isPalindromeCheck('Привет')); // Вывод результата в консоль
 
