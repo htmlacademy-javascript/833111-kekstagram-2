@@ -39,7 +39,7 @@ function generatePhotos() {
     photos.push({
       id: i,
       url: 'photos/{{i}}.jpg',
-      description: `Описание фотографии ${i}`,
+      description: 'Красивый закат',
       likes: getRandomInt(15, 200),
       comments: generateComments()
     });
