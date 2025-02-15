@@ -2,7 +2,7 @@
 function checkStringLength(string, maxLength) {
   return string.length <= maxLength;
 }
-window.console.log(сheckStringLength('Привет, мир!', 15)); // Вывод результата в консоль
+window.console.log(checkStringLength('Привет, мир!', 15)); // Вывод результата в консоль
 
 //Функция проверки палиндрома
 function isPalindromeCheck(string) {
