@@ -17,3 +17,21 @@ window.console.log(isPalindromeCheck('А роза упала на лапу Аз�
 window.console.log(isPalindromeCheck('ДовОд')); // Вывод результата в консоль
 window.console.log(isPalindromeCheck('Привет')); // Вывод результата в консоль
 
+
+//Функция проверки длительности встречи
+function checkingTimeMeeting (time) {
+  const [hours, minutes] = time.split(':').map((num) => parseInt(num, 10));
+  return hours * 60 + minutes;
+}
+
+function checkMeetingTime(startOfWorkDay, endOfWorkDay, startOfMeeting, meetingDuration) {
+  const workDayStart = checkingTimeMeeting(startOfWorkDay);
+  const workDayEnd = checkingTimeMeeting(endOfWorkDay);
+  const meetingStart = checkingTimeMeeting(startOfMeeting);
+  const meetingEnd = meetingStart + meetingDuration;
+
+  return meetingStart >= workDayStart && meetingEnd <= workDayEnd;
+}
+
+window.console.log(checkMeetingTime('08:00', '17:30', '17:00', 90));
+
