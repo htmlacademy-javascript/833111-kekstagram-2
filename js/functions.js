@@ -34,3 +34,4 @@ function checkMeetingTime(startOfWorkDay, endOfWorkDay, startOfMeeting, meetingD
 }
 
 window.console.log(checkMeetingTime('08:00', '17:30', '17:00', 90));
+
