@@ -1,3 +1,3 @@
-import {photosArray} from './data.js';
+import './data.js';
+import './miniatures.js';
 
-window.console.log(photosArray);
