@@ -1,4 +1,4 @@
-function getRandomInt(min, max) {
+export function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -11,14 +11,13 @@ const messages = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-function getRandomMessage() {
+export function getRandomMessage() {
   return messages[getRandomInt(0, messages.length - 1)];
 }
 
 const names = ['Артём', 'Мария', 'Иван', 'Ольга', 'Дмитрий', 'Анна', 'Сергей', 'Елена', 'Алексей', 'Татьяна'];
 
-function getRandomName() {
+export function getRandomName() {
   return names[getRandomInt(0, names.length - 1)];
 }
 
-export {getRandomInt, getRandomMessage, getRandomName};

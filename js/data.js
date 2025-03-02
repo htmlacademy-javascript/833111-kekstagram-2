@@ -38,6 +38,4 @@ function generatePhotos() {
   return photos;
 }
 
-const photosArray = generatePhotos();
-
-export {photosArray};
+export const photosArray = generatePhotos();
