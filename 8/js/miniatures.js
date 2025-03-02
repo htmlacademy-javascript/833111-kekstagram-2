@@ -1,18 +1,24 @@
-import {photosArray} from './data.js';
-
 const miniatureTemplate = document.querySelector('#picture').content;
 const miniatureList = document.querySelector('.pictures');
 const fragment = document.createDocumentFragment();
 
-photosArray.forEach(({ url, description, likes, comments }) => {
+function fillPhotoCardTemplate(picture) {
   const miniatureElement = miniatureTemplate.cloneNode(true);
   const imageElement = miniatureElement.querySelector('.picture__img');
-  imageElement.src = url;
-  imageElement.alt = description;
-  miniatureElement.querySelector('.picture__likes').textContent = likes;
-  miniatureElement.querySelector('.picture__comments').textContent = comments.length;
+  imageElement.src = picture.url;
+  imageElement.alt = picture.description;
+  miniatureElement.querySelector('.picture__likes').textContent = picture.likes;
+  miniatureElement.querySelector('.picture__comments').textContent = picture.comments.length;
 
-  fragment.appendChild(miniatureElement);
-});
+  return miniatureElement;
+}
 
-miniatureList.appendChild(fragment);
+export function createRenderPicture(photosArray) {
+  photosArray.forEach((picture) => {
+    const pictureCard = fillPhotoCardTemplate(picture);
+    fragment.appendChild(pictureCard);
+  });
+
+  miniatureList.appendChild(fragment);
+}
+
