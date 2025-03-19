@@ -1,3 +1,5 @@
+import { initPreviews } from './preview.js';
+
 const miniatureTemplate = document.querySelector('#picture').content;
 const miniatureList = document.querySelector('.pictures');
 const fragment = document.createDocumentFragment();
@@ -9,6 +11,7 @@ function fillPhotoCardTemplate(picture) {
   imageElement.alt = picture.description;
   miniatureElement.querySelector('.picture__likes').textContent = picture.likes;
   miniatureElement.querySelector('.picture__comments').textContent = picture.comments.length;
+  miniatureElement.querySelector('.picture').dataset.id = picture.id;
 
   return miniatureElement;
 }
@@ -20,5 +23,6 @@ export function createRenderPicture(photosArray) {
   });
 
   miniatureList.appendChild(fragment);
-}
 
+  initPreviews(photosArray);
+}
