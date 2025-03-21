@@ -6,7 +6,13 @@ const commentCountTotal = bigPicture.querySelector('.social__comment-total-count
 const commentsContainer = bigPicture.querySelector('.social__comments');
 const caption = bigPicture.querySelector('.social__caption');
 const closeButton = bigPicture.querySelector('.big-picture__cancel');
+const commentCounterBlock = document.querySelector('.social__comment-count');
+const commentLoading = document.querySelector('.comments-loader');
 const body = document.body;
+
+const COMMENTS_PER_LOAD = 5;
+let visibleCommentsCount = 0;
+let currentComments = [];
 
 function createCommentElement(comment) {
   const commentElement = document.createElement('li');
@@ -24,6 +30,30 @@ function updatePreview(photo) {
   likesCount.textContent = photo.likes;
   commentCountTotal.textContent = photo.comments.length;
   caption.textContent = photo.description;
+  currentComments = photo.comments;
+  visibleCommentsCount = Math.min(COMMENTS_PER_LOAD, currentComments.length);
+}
+
+function renderComments() {
+  commentsContainer.innerHTML = '';
+
+  const visibleComments = currentComments.slice(0, visibleCommentsCount);
+  visibleComments.forEach((comment) => {
+    commentsContainer.appendChild(createCommentElement(comment));
+  });
+
+  commentCountShown.textContent = visibleComments.length;
+
+  if (visibleComments.length >= currentComments.length) {
+    commentLoading.classList.add('hidden');
+  } else {
+    commentLoading.classList.remove('hidden');
+  }
+}
+
+function onLoadMoreClick() {
+  visibleCommentsCount = Math.min(visibleCommentsCount + COMMENTS_PER_LOAD, currentComments.length);
+  renderComments();
 }
 
 function openPreview(photo) {
@@ -31,13 +61,10 @@ function openPreview(photo) {
   body.classList.add('modal-open');
 
   updatePreview(photo);
+  renderComments();
 
-  commentsContainer.innerHTML = '';
-  photo.comments.forEach((comment) => {
-    commentsContainer.appendChild(createCommentElement(comment));
-  });
-
-  commentCountShown.textContent = photo.comments.length;
+  commentCounterBlock.classList.remove('hidden');
+  commentLoading.classList.remove('hidden');
 }
 
 function closePreview() {
@@ -52,6 +79,7 @@ function onEscKeyPress(evt) {
   }
 }
 
+commentLoading.addEventListener('click', onLoadMoreClick);
 closeButton.addEventListener('click', closePreview);
 
 export function initPreviews(photosArray) {
