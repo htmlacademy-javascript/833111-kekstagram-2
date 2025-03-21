@@ -18,15 +18,19 @@ function createCommentElement(comment) {
   return commentElement;
 }
 
-function openPreview(photo) {
-  bigPicture.classList.remove('hidden');
-  body.classList.add('modal-open');
-
+function updatePreview(photo) {
   bigPictureImage.src = photo.url;
   bigPictureImage.alt = photo.description;
   likesCount.textContent = photo.likes;
   commentCountTotal.textContent = photo.comments.length;
   caption.textContent = photo.description;
+}
+
+function openPreview(photo) {
+  bigPicture.classList.remove('hidden');
+  body.classList.add('modal-open');
+
+  updatePreview(photo);
 
   commentsContainer.innerHTML = '';
   photo.comments.forEach((comment) => {
@@ -34,8 +38,6 @@ function openPreview(photo) {
   });
 
   commentCountShown.textContent = photo.comments.length;
-
-  document.addEventListener('keydown', onEscKeyPress);
 }
 
 function closePreview() {
@@ -53,13 +55,17 @@ function onEscKeyPress(evt) {
 closeButton.addEventListener('click', closePreview);
 
 export function initPreviews(photosArray) {
-  const thumbnails = document.querySelectorAll('.picture');
+  const photoContainer = document.querySelector('.pictures');
+  photoContainer.addEventListener('click', (event) => {
+    const thumbnail = event.target.closest('.picture');
+    if (!thumbnail) {
+      return;
+    }
 
-  thumbnails.forEach((thumbnail) => {
-    thumbnail.addEventListener('click', () => {
-      const photoId = Number(thumbnail.dataset.id);
-      const photoData = photosArray.find((photo) => photo.id === photoId);
+    const photoId = Number(thumbnail.dataset.id);
+    const photoData = photosArray.find((photo) => photo.id === photoId);
+    if (photoData) {
       openPreview(photoData);
-    });
+    }
   });
 }
