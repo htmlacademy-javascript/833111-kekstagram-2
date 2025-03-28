@@ -1,3 +1,5 @@
+import { closeForm } from './form.js';
+
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
 const likesCount = bigPicture.querySelector('.likes-count');
@@ -73,9 +75,16 @@ function closePreview() {
   document.removeEventListener('keydown', onEscKeyPress);
 }
 
-function onEscKeyPress(evt) {
+export function onEscKeyPress(evt) {
   if (evt.key === 'Escape') {
-    closePreview();
+    const isFormOpen = !document.querySelector('.img-upload__overlay').classList.contains('hidden');
+    const isPreviewOpen = !document.querySelector('.big-picture').classList.contains('hidden');
+
+    if (isFormOpen) {
+      closeForm();
+    } else if (isPreviewOpen) {
+      closePreview();
+    }
   }
 }
 
