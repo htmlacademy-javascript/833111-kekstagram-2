@@ -1,5 +1,6 @@
 import { onEscKeyPress } from './preview.js';
 import { validateHashtags, getHashtagError } from './util.js';
+import { onScaleDecreaseClick, onScaleIncreaseClick, onEffectsListChange } from './effects.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const fileInput = document.querySelector('.img-upload__input');
@@ -9,6 +10,9 @@ const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
 const body = document.body;
 const filePreview = document.querySelector('.img-upload__preview img');
+const scaleControlSmaller = document.querySelector('.scale__control--smaller');
+const scaleControlBigger = document.querySelector('.scale__control--bigger');
+const effectsList = document.querySelector('.effects__list');
 
 const MAX_COMMENT_LENGTH = 140;
 const FILE_TYPES = ['jpg', 'jpeg', 'png', 'gif'];
@@ -34,7 +38,7 @@ const updatePreview = () => {
 };
 
 const openForm = () => {
-  overlay.classList.remove('hidden'); // Показываем форму
+  overlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onEscKeyPress);
 };
@@ -84,5 +88,8 @@ const initUploadForm = () => {
   });
 };
 
-initUploadForm();
+scaleControlSmaller.addEventListener('click', onScaleDecreaseClick);
+scaleControlBigger.addEventListener('click', onScaleIncreaseClick);
+effectsList.addEventListener('change', onEffectsListChange);
 
+initUploadForm();
