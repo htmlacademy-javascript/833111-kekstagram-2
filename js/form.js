@@ -1,6 +1,8 @@
 import { onEscKeyPress } from './preview.js';
 import { validateHashtags, getHashtagError } from './util.js';
 import { onScaleDecreaseClick, onScaleIncreaseClick, onEffectsListChange } from './effects.js';
+import { uploadPhotoData } from './fetch-api.js';
+import { showSuccessNotification, showErrorNotification } from './confirmation-window.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const fileInput = document.querySelector('.img-upload__input');
@@ -13,6 +15,7 @@ const filePreview = document.querySelector('.img-upload__preview img');
 const scaleControlSmaller = document.querySelector('.scale__control--smaller');
 const scaleControlBigger = document.querySelector('.scale__control--bigger');
 const effectsList = document.querySelector('.effects__list');
+const submitButton = uploadForm.querySelector('.img-upload__submit');
 
 const MAX_COMMENT_LENGTH = 140;
 const FILE_TYPES = ['jpg', 'jpeg', 'png', 'gif'];
@@ -63,7 +66,21 @@ const onFormSubmit = (evt) => {
     pristine.addError(hashtagsInput, hashtagsValidation.errors.join(', '));
   } else {
     hashtagsInput.value = hashtagsInput.value.trim().replace(/\s+/g, ' ');
-    uploadForm.submit();
+    const formData = new FormData(uploadForm);
+
+    submitButton.disabled = true;
+
+    uploadPhotoData(formData)
+      .then(() => {
+        showSuccessNotification();
+        uploadForm.reset();
+      })
+      .catch((error) => {
+        showErrorNotification(error.message);
+      })
+      .finally(() => {
+        submitButton.disabled = false;
+      });
   }
 };
 
