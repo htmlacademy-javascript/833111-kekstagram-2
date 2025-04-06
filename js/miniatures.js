@@ -1,28 +1,44 @@
 import { initPreviews } from './preview.js';
 
-const miniatureTemplate = document.querySelector('#picture').content;
-const miniatureList = document.querySelector('.pictures');
+const PICTURE_SELECTORS = {
+  CONTAINER: '.pictures',
+  TEMPLATE: '#picture',
+  ITEM: '.picture',
+  IMAGE: '.picture__img',
+  LIKES: '.picture__likes',
+  COMMENTS: '.picture__comments',
+  UPLOAD_FORM: '.img-upload'
+};
+
+const createPhotoElement = (photo) => {
+  const template = document.querySelector(PICTURE_SELECTORS.TEMPLATE).content.cloneNode(true);
+  const element = template.querySelector(PICTURE_SELECTORS.ITEM);
+
+  element.querySelector(PICTURE_SELECTORS.IMAGE).src = photo.url;
+  element.querySelector(PICTURE_SELECTORS.IMAGE).alt = photo.description;
+  element.querySelector(PICTURE_SELECTORS.LIKES).textContent = photo.likes;
+  element.querySelector(PICTURE_SELECTORS.COMMENTS).textContent = photo.comments.length;
+  element.dataset.id = photo.id;
+
+  return element;
+};
+
+const container = document.querySelector(PICTURE_SELECTORS.CONTAINER);
 const fragment = document.createDocumentFragment();
 
-function fillPhotoCardTemplate(picture) {
-  const miniatureElement = miniatureTemplate.cloneNode(true);
-  const imageElement = miniatureElement.querySelector('.picture__img');
-  imageElement.src = picture.url;
-  imageElement.alt = picture.description;
-  miniatureElement.querySelector('.picture__likes').textContent = picture.likes;
-  miniatureElement.querySelector('.picture__comments').textContent = picture.comments.length;
-  miniatureElement.querySelector('.picture').dataset.id = picture.id;
+export const createRenderPicture = (photos) => {
+  container.querySelectorAll(PICTURE_SELECTORS.ITEM).forEach((pic) => pic.remove());
 
-  return miniatureElement;
-}
-
-export function createRenderPicture(photosArray) {
-  photosArray.forEach((picture) => {
-    const pictureCard = fillPhotoCardTemplate(picture);
-    fragment.appendChild(pictureCard);
+  photos.forEach((photo) => {
+    fragment.appendChild(createPhotoElement(photo));
   });
 
-  miniatureList.appendChild(fragment);
+  container.appendChild(fragment);
+  initPreviews(photos);
+};
 
-  initPreviews(photosArray);
-}
+export const PictureSelectors = {
+  CONTAINER: PICTURE_SELECTORS.CONTAINER,
+  ITEM: PICTURE_SELECTORS.ITEM,
+  UPLOAD_FORM: PICTURE_SELECTORS.UPLOAD_FORM
+};
