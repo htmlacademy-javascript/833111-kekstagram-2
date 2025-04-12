@@ -1,4 +1,4 @@
-import { closeForm } from './form.js';
+import { isEscKey } from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImage = bigPicture.querySelector('.big-picture__img img');
@@ -67,27 +67,23 @@ function openPreview(photo) {
 
   commentCounterBlock.classList.remove('hidden');
   commentLoading.classList.remove('hidden');
+
+  document.addEventListener('keydown', onPreviewEscKeydown);
 }
 
 function closePreview() {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onEscKeyPress);
+  document.removeEventListener('keydown', onPreviewEscKeydown);
 }
 
-export function onEscKeyPress(evt) {
-  if (evt.key === 'Escape') {
-    const isFormOpen = !document.querySelector('.img-upload__overlay').classList.contains('hidden');
-    const isPreviewOpen = !document.querySelector('.big-picture').classList.contains('hidden');
-
-    if (isFormOpen) {
-      closeForm();
-    } else if (isPreviewOpen) {
+function onPreviewEscKeydown(evt) {
+  if (isEscKey(evt)) {
+    if (!bigPicture.classList.contains('hidden')) {
       closePreview();
     }
   }
 }
-
 commentLoading.addEventListener('click', onLoadMoreClick);
 closeButton.addEventListener('click', closePreview);
 
