@@ -1,4 +1,4 @@
-import { onEscKeyPress } from './preview.js';
+import { isEscKey } from './util.js';
 import { validateHashtags, getHashtagError } from './util.js';
 import { onScaleDecreaseClick, onScaleIncreaseClick, onEffectsListChange } from './effects.js';
 import { uploadPhotoData } from './fetch-api.js';
@@ -6,7 +6,7 @@ import { showSuccessNotification, showErrorNotification } from './confirmation-w
 
 const uploadForm = document.querySelector('.img-upload__form');
 const fileInput = document.querySelector('.img-upload__input');
-const overlay = document.querySelector('.img-upload__overlay');
+export const overlay = document.querySelector('.img-upload__overlay');
 const cancelButton = document.querySelector('.img-upload__cancel');
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
@@ -66,6 +66,7 @@ const updatePreview = () => {
     });
     overlay.classList.remove('hidden');
     body.classList.add('modal-open');
+    body.addEventListener('keydown', closeFormOnEsc);
   };
 
   reader.onerror = () => {
@@ -80,14 +81,32 @@ const updatePreview = () => {
 export const closeForm = () => {
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onEscKeyPress);
+  document.removeEventListener('keydown', closeFormOnEsc);
   uploadForm.reset();
   resetPreviews();
   scaleValue.value = '100%';
   filePreview.style.transform = 'scale(1)';
   filePreview.style.filter = 'none';
   sliderWrapper.classList.add('hidden');
+  fileInput.value = '';
+  hashtagsInput.value = '';
+  commentInput.value = '';
 };
+
+function closeFormOnEsc(evt) {
+  if (!isEscKey(evt)) {
+    return;
+  }
+
+  const isFocusOnHashtags = hashtagsInput === document.activeElement;
+  const isFocusOnComment = commentInput === document.activeElement;
+
+  if (isFocusOnHashtags || isFocusOnComment) {
+    return;
+  }
+
+  closeForm();
+}
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
@@ -122,6 +141,7 @@ const onFormSubmit = (evt) => {
     .finally(() => {
       submitButton.disabled = false;
     });
+
 };
 
 const initUploadForm = () => {
@@ -143,7 +163,7 @@ const initUploadForm = () => {
 
   [hashtagsInput, commentInput].forEach((input) => {
     input.addEventListener('keydown', (evt) => {
-      if (onEscKeyPress(evt)) {
+      if (evt.key === 'Escape') {
         evt.stopPropagation();
       }
     });
