@@ -10,7 +10,7 @@ const PICTURE_SELECTORS = {
   UPLOAD_FORM: '.img-upload'
 };
 
-const createPhotoElement = (photo) => {
+function createPhotoElement(photo) {
   const template = document.querySelector(PICTURE_SELECTORS.TEMPLATE).content.cloneNode(true);
   const element = template.querySelector(PICTURE_SELECTORS.ITEM);
 
@@ -21,13 +21,15 @@ const createPhotoElement = (photo) => {
   element.dataset.id = photo.id;
 
   return element;
-};
+}
 
 const container = document.querySelector(PICTURE_SELECTORS.CONTAINER);
 const fragment = document.createDocumentFragment();
 
-export const createRenderPicture = (photos) => {
-  container.querySelectorAll(PICTURE_SELECTORS.ITEM).forEach((pic) => pic.remove());
+export function createRenderPicture(photos) {
+  container.querySelectorAll(PICTURE_SELECTORS.ITEM).forEach((pic) => {
+    pic.remove();
+  });
 
   photos.forEach((photo) => {
     fragment.appendChild(createPhotoElement(photo));
@@ -35,7 +37,7 @@ export const createRenderPicture = (photos) => {
 
   container.appendChild(fragment);
   initPreviews(photos);
-};
+}
 
 export const PictureSelectors = {
   CONTAINER: PICTURE_SELECTORS.CONTAINER,

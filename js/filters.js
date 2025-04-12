@@ -3,17 +3,19 @@ import { debounce } from './util.js';
 
 const RANDOM_PHOTOS_NUMBER = 10;
 const RERENDER_DELAY = 500;
-let photosData = [];
-
 const FILTERS = {
   default: 'filter-default',
   random: 'filter-random',
   discussed: 'filter-discussed',
 };
 
-const compareComments = (a, b) => b.comments.length - a.comments.length;
+let photosData = [];
 
-const getFilteredPhotos = (filterType) => {
+function compareComments(a, b) {
+  return b.comments.length - a.comments.length;
+}
+
+function getFilteredPhotos(filterType) {
   switch (filterType) {
     case FILTERS.random:
       return [...photosData]
@@ -24,28 +26,30 @@ const getFilteredPhotos = (filterType) => {
     default:
       return [...photosData];
   }
-};
+}
 
 const container = document.querySelector(PictureSelectors.CONTAINER);
 const uploadForm = container.querySelector(PictureSelectors.UPLOAD_FORM);
 const pictures = container.querySelectorAll(PictureSelectors.ITEM);
 
-const clearOnlyPhotos = () => {
-  pictures.forEach((pic) => pic.remove());
+function clearOnlyPhotos() {
+  pictures.forEach((pic) => {
+    pic.remove();
+  });
 
   if (uploadForm && !container.contains(uploadForm)) {
     container.prepend(uploadForm);
   }
-};
+}
 
-const applyFilter = (filterType) => {
+function applyFilter(filterType) {
   clearOnlyPhotos();
   createRenderPicture(getFilteredPhotos(filterType));
-};
+}
 
 const debouncedApplyFilter = debounce(applyFilter, RERENDER_DELAY);
 
-const onFilterClick = (evt) => {
+function clickToFilter(evt) {
   const button = evt.target.closest('.img-filters__button');
   if (!button) {
     return;
@@ -60,12 +64,12 @@ const onFilterClick = (evt) => {
   button.classList.add('img-filters__button--active');
 
   debouncedApplyFilter(button.id);
-};
+}
 
-export const initFilters = (photos) => {
+export function triggerTheFilter(photos) {
   photosData = photos;
   document.querySelector('.img-filters')
     .classList.remove('img-filters--inactive');
   document.querySelector('.img-filters')
-    .addEventListener('click', onFilterClick);
-};
+    .addEventListener('click', clickToFilter);
+}

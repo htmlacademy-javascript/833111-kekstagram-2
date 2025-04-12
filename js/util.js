@@ -1,9 +1,11 @@
-export const isEscKey = (evt) => evt.key === 'Escape';
+export function isEscKey(evt) {
+  return evt.key === 'Escape';
+}
 
 const MAX_HASHTAG_LENGTH = 20;
 const MAX_HASHTAGS = 5;
 
-export const validateHashtags = (value) => {
+export function validateHashtags(value) {
   const hashtags = value.toLowerCase().trim().split(/\s+/);
   const errors = [];
 
@@ -52,18 +54,20 @@ export const validateHashtags = (value) => {
     isValid: errors.length === 0,
     errors
   };
-};
+}
 
-export const getHashtagError = (value) => {
+export function getHashtagError(value) {
   const { errors } = validateHashtags(value);
   return errors || null;
-};
+}
 
 export function debounce(callback, timeoutDelay) {
   let timeoutId;
 
-  return (...rest) => {
+  return function(...rest) {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+    timeoutId = setTimeout(function() {
+      callback.apply(this, rest);
+    }, timeoutDelay);
   };
 }
