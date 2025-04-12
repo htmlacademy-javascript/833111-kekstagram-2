@@ -15,8 +15,8 @@ const ErrorMessage = {
   UPLOAD: 'Ошибка отправки формы',
 };
 
-const makeApiRequest = (route, errorText, method = HttpMethod.GET, body = null) =>
-  fetch(`${API_URL}${route}`, { method, body })
+function makeApiRequest(route, errorText, method = HttpMethod.GET, body = null) {
+  return fetch(`${API_URL}${route}`, { method, body })
     .then((response) => {
       if (!response.ok) {
         throw new Error(errorText);
@@ -26,7 +26,12 @@ const makeApiRequest = (route, errorText, method = HttpMethod.GET, body = null) 
     .catch(() => {
       throw new Error(errorText);
     });
+}
 
-export const fetchPhotos = () => makeApiRequest(ApiPath.GET_PHOTOS, ErrorMessage.LOAD);
+export function fetchPhotos() {
+  return makeApiRequest(ApiPath.GET_PHOTOS);
+}
 
-export const uploadPhotoData = (body) => makeApiRequest(ApiPath.UPLOAD, ErrorMessage.UPLOAD, HttpMethod.POST, body);
+export function uploadPhotoData(body) {
+  return makeApiRequest(ApiPath.UPLOAD, ErrorMessage.UPLOAD, HttpMethod.POST, body);
+}

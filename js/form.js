@@ -31,16 +31,18 @@ const pristine = new Pristine(uploadForm, {
   errorTextClass: 'img-upload__field-wrapper--error'
 });
 
-const validateComment = (value) => value.length <= MAX_COMMENT_LENGTH;
+function validateComment(value) {
+  return value.length <= MAX_COMMENT_LENGTH;
+}
 
-const resetPreviews = () => {
+function resetPreviews() {
   filePreview.src = DEFAULT_PREVIEW_SRC;
   effectPreviews.forEach((preview) => {
     preview.style.backgroundImage = '';
   });
-};
+}
 
-const updatePreview = () => {
+function updatePreview() {
   const file = fileInput.files[0];
   if (!file) {
     resetPreviews();
@@ -59,29 +61,29 @@ const updatePreview = () => {
 
   const reader = new FileReader();
 
-  reader.onload = () => {
+  reader.onload = function() {
     filePreview.src = reader.result;
     effectPreviews.forEach((preview) => {
       preview.style.backgroundImage = `url(${reader.result})`;
     });
     overlay.classList.remove('hidden');
     body.classList.add('modal-open');
-    body.addEventListener('keydown', closeFormOnEsc);
+    body.addEventListener('keydown', handleGlobalEscPress);
   };
 
-  reader.onerror = () => {
+  reader.onerror = function() {
     showErrorNotification('Ошибка при чтении файла');
     fileInput.value = '';
     resetPreviews();
   };
 
   reader.readAsDataURL(file);
-};
+}
 
-export const closeForm = () => {
+export function closeForm() {
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  document.removeEventListener('keydown', closeFormOnEsc);
+  document.removeEventListener('keydown', handleGlobalEscPress);
   uploadForm.reset();
   resetPreviews();
   scaleValue.value = '100%';
@@ -91,7 +93,7 @@ export const closeForm = () => {
   fileInput.value = '';
   hashtagsInput.value = '';
   commentInput.value = '';
-};
+}
 
 function closeFormOnEsc(evt) {
   if (!isEscKey(evt)) {
@@ -108,13 +110,29 @@ function closeFormOnEsc(evt) {
   closeForm();
 }
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-
-  if (!fileInput.files[0]) {
-    showErrorNotification('Загрузите фотографию');
+function handleGlobalEscPress(evt) {
+  if (!isEscKey(evt)) {
     return;
   }
+
+  const errorPopup = document.querySelector('.error');
+  const successPopup = document.querySelector('.success');
+
+  if (errorPopup) {
+    errorPopup.remove();
+    return;
+  }
+
+  if (successPopup) {
+    successPopup.remove();
+    return;
+  }
+
+  closeFormOnEsc(evt);
+}
+
+function submitTheForm(evt) {
+  evt.preventDefault();
 
   const isValid = pristine.validate();
   const hashtagsValidation = validateHashtags(hashtagsInput.value);
@@ -141,10 +159,9 @@ const onFormSubmit = (evt) => {
     .finally(() => {
       submitButton.disabled = false;
     });
+}
 
-};
-
-const initUploadForm = () => {
+function triggerTheUploadForm() {
   pristine.addValidator(
     hashtagsInput,
     (value) => validateHashtags(value).isValid,
@@ -159,7 +176,7 @@ const initUploadForm = () => {
 
   fileInput.addEventListener('change', updatePreview);
   cancelButton.addEventListener('click', closeForm);
-  uploadForm.addEventListener('submit', onFormSubmit);
+  uploadForm.addEventListener('submit', submitTheForm);
 
   [hashtagsInput, commentInput].forEach((input) => {
     input.addEventListener('keydown', (evt) => {
@@ -168,10 +185,10 @@ const initUploadForm = () => {
       }
     });
   });
-};
+}
 
 scaleControlSmaller.addEventListener('click', onScaleDecreaseClick);
 scaleControlBigger.addEventListener('click', onScaleIncreaseClick);
 effectsList.addEventListener('change', onEffectsListChange);
 
-initUploadForm();
+triggerTheUploadForm();

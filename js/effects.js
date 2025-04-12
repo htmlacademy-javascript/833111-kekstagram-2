@@ -20,7 +20,9 @@ const effectSettings = {
     },
     start: 1,
     step: 0.1,
-    filter: (value) => `grayscale(${value})`,
+    filter: function(value) {
+      return `grayscale(${value})`;
+    },
   },
   sepia: {
     range: {
@@ -29,7 +31,9 @@ const effectSettings = {
     },
     start: 1,
     step: 0.1,
-    filter: (value) => `sepia(${value})`,
+    filter: function(value) {
+      return `sepia(${value})`;
+    },
   },
   marvin: {
     range: {
@@ -38,7 +42,9 @@ const effectSettings = {
     },
     start: 100,
     step: 1,
-    filter: (value) => `invert(${value}%)`,
+    filter: function(value) {
+      return `invert(${value}%)`;
+    },
   },
   phobos: {
     range: {
@@ -47,7 +53,9 @@ const effectSettings = {
     },
     start: 3,
     step: 0.1,
-    filter: (value) => `blur(${value}px)`,
+    filter: function(value) {
+      return `blur(${value}px)`;
+    },
   },
   heat: {
     range: {
@@ -56,7 +64,9 @@ const effectSettings = {
     },
     start: 3,
     step: 0.1,
-    filter: (value) => `brightness(${value})`,
+    filter: function(value) {
+      return `brightness(${value})`;
+    },
   },
 };
 
@@ -69,13 +79,13 @@ noUiSlider.create(effectSlider, {
   step: 0.1,
   connect: 'lower',
   format: {
-    to: function (value) {
+    to: function(value) {
       if (Number.isInteger(value)) {
         return value.toFixed(0);
       }
       return value.toFixed(1);
     },
-    from: function (value) {
+    from: function(value) {
       return parseFloat(value);
     },
   },
