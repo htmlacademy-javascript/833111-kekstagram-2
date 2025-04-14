@@ -11,7 +11,6 @@ const HttpMethod = {
 };
 
 const ErrorMessage = {
-  LOAD: 'Ошибка загрузки данных',
   UPLOAD: 'Ошибка отправки формы',
 };
 

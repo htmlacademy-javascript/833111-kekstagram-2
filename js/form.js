@@ -6,7 +6,7 @@ import { showSuccessNotification, showErrorNotification } from './confirmation-w
 
 const uploadForm = document.querySelector('.img-upload__form');
 const fileInput = document.querySelector('.img-upload__input');
-export const overlay = document.querySelector('.img-upload__overlay');
+const overlay = document.querySelector('.img-upload__overlay');
 const cancelButton = document.querySelector('.img-upload__cancel');
 const hashtagsInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
@@ -93,6 +93,7 @@ export function closeForm() {
   fileInput.value = '';
   hashtagsInput.value = '';
   commentInput.value = '';
+  pristine.reset();
 }
 
 function closeFormOnEsc(evt) {
